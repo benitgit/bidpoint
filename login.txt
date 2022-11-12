@@ -1,0 +1,151 @@
+<?php
+ob_start();
+session_start();
+include("dbconnect.php");
+if(isset($_SESSION["user"])){
+  header("location:logedon.php");
+  die();
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+
+      
+      
+
+  
+
+
+
+
+
+    <!-- CSS-->
+  
+
+
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+
+
+	     <title></title>
+
+  <style type="text/css">
+.wrapper{
+
+  z-index:-1000;
+  width:100%;
+  height: 100%;
+  overflow: hidden;
+  min-height: 100%;
+  min-width: 100%;
+}
+
+#imgbg{
+position: absolute;
+  top:0;
+left:0;
+min-height: 100%;
+min-width:100%;
+height: auto;
+position: fixed;
+
+}
+
+.content{
+position: absolute;
+min-height: 100%;
+min-width: 100%;
+z-index:1000;
+margin-top:;
+margin-left: ;
+
+background-color: rgba(0,0,0,0.7);
+
+}
+
+
+  </style>
+
+</head>
+
+<body>
+
+<div class="wrapper">
+  
+<img id="imgbg" src="images/bglogin.png">
+
+</div>
+
+<div class="content">
+<section id="divhagati" style="width:60%;  border-radius:5px; valign:center; background:whitesmoke; margin:15% 20% 0% 20%;">
+
+<center> <img src="images/icons/round-account-button-with-user-inside.png" title="Login to your account" style="height:50px; width:50px; opacity:0.7; color:#16A085;"><!-- <i  title="Login to your account" class="flaticon-round-account-button-with-user-inside" style="size:100px;color:#26a59a;"></i>  --></center>
+<br>
+
+
+
+<FORM method="POST">
+<div class="row">
+        <div class="input-field col s6">
+        <i class="prefix"> <i class="flaticon-user-outline"></i></i>
+          <input placeholder="" id="username" name="user" type="text" class="" required>
+          <label for="username">Username</label>
+        </div>
+        
+        
+        <div class="input-field col s6">
+        <i class=" prefix"> <i class="flaticon-locked-padlock"></i></i>
+          <input id="user_password" placeholder="" type="password" name="password" class="" required>
+         <label for="user_password">Password</label>
+        </div>
+        </div>
+
+<center><button type="submit" name="submit" value="Login" class="waves-effect waves-light btn"  title="Click here to login">Login  </button></center><br>
+
+
+<?php
+
+ 
+      if(isset($_POST["user"]) && isset($_POST["password"])){
+
+      // include('dbconnect.php');
+
+        mysql_connect("localhost","root","");
+        mysql_select_db("iwacustore");
+        $user=$_POST["user"];
+        $pwd=$_POST["password"];
+        $query=mysql_query("SELECT * FROM users WHERE username='$user' AND pwd='$pwd' LIMIT 1") or die(mysql_error());
+        $count=mysql_num_rows($query);
+        if($count==1){
+        
+          $_SESSION["user"]=$user;
+          header("location:logedon.php");
+          die(); 
+
+          echo "<div class='progress'><div class='indeterminate'></div></div>";
+        } else {
+          echo "<br><center><div class='alert alert-danger' role='alert'><strong>Error!</strong> Wrong Username or Password.</div></center><BR>";
+        }
+      }
+     ?>
+
+</FORM>
+
+
+
+
+<center></center>
+
+<div style="margin-left:30px; margin-right:30px; "><a href="apps.php"><span class="fa fa-home" style="font-size:15pt;"></span> Back to home</a> <a href="register.php" title="Click here if you want to create an account " style="float:right;"> <span class="fa fa-edit" style="font-size:15pt;"> </span>Create account</a></div>
+
+</section>   
+
+</div>
+
+         
+          
+            
+            
+            
+</html>
